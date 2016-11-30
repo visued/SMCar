@@ -1,377 +1,302 @@
+# -*- coding: utf-8 -*-
+#:import C kivy.utils.get_color_from_hex
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
 <SMAgro>:
     ScreenManager:
+        transition: FadeTransition()
         id: kivy_screen_manager
         StartScreen:
-            name: "start_screen"
+            name: 'start_screen'
 
         EquipamentoScreen:
             id: equipamento_screen
-            name: "equipamento_screen"
+            name: 'equipamento_screen'
 
         ConfiguracoesScreen:
             id: configuracoes_screen
             name: "configuracoes_screen"
 
-        AboutScreen:
-            id: about_screen
-            name: "about_screen"
-
+#Tela inicial
 <StartScreen@Screen>:
     canvas:
         Color:
-            rgb: [1,1,1,1]
+            rgb: C('#111111')
         Rectangle:
             pos: self.pos
             size: self.size
+
+    #Inicia Layout da tela inicial
     FloatLayout:
         pos_hint: {'center_y': 0.5, 'center_x': 0.5}
         size_hint: 0.45, 0.48
+
         Label:
             id: lbl_start_home
             text: 'SMAgro '
             color: [0,0,0,.200]
-            font_size: root.height / 6
+            font_size: '50sp'
             font_name: '../data/fonts/Segoe_UI.ttf'
-            size_hint_x:0.3
-            size_hint_y:1.6
-            pos_hint: {'y': .5, 'x': .35}
+            pos_hint: {'y': .8, 'center_x': 0.5}
+
+        #Inicia botão de equipamentos
         Button:
-            on_release: app.root.changeScreen(self.text.lower())
-            background_color: [.4,1,.1,1]
-            pos_hint: {'x': 0, 'y': 0.375}
-            size_hint: 1, 0.625
-            text: "Equipamentos"
+            background_color: C('#00B357')
+            background_normal: ''
+            text: 'Equipamentos'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            pos_hint: {'center_x': 0.5, 'y': 0.380}
+            size_hint: 1.50, 0.625
             text_size: self.size
             padding: 8, 8
-            font_name: '../data/fonts/Segoe_UI.ttf'
+            on_press: root.manager.current = 'equipamento_screen'
             Image:
                 source: '../data/img/Truck-96.png'
-                color: [1,1,1,1]
-                y: self.parent.y + self.parent.height - 120
-                x: self.parent.x + self.parent.height + 70
+                y: self.parent.y + self.parent.height - 100
+                x: self.parent.x + self.parent.height - 30
 
+        #Inicia botão de configurações
         Button:
-            on_release: app.root.changeScreen(self.text.lower())
-            background_color: [.4,1,.1,1]
-            pos_hint: {'x': 0, 'y': 0}
-            size_hint: .5, 0.375
+            background_color: C('#00B357')
+            background_normal: ''
             text: 'Configuracoes'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            pos_hint: {'center_x': .125, 'y': 0}
+            size_hint: 0.747, 0.375
             text_size: self.size
             padding: 8, 8
-            font_name: '../data/fonts/Segoe_UI.ttf'
+            on_press: root.manager.current = 'configuracoes_screen'
             Image:
                 source: '../data/img/Settings-64.png'
-                color: [1,1,1,1]
                 y: self.parent.y + self.parent.height - 90
-                x: self.parent.x + self.parent.height - 15
+                x: self.parent.x + self.parent.height - 60
+
+        #Inicia botão do roteizador
         Button:
-            on_release: app.root.call_External_Pog()
-            background_color: [.4,1,.1,1]
-            pos_hint: {'x': .5, 'y': 0}
-            size_hint: .5, 0.375
+            background_color: C('#00B357')
+            background_normal: ''
             text: 'Routerizador'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            pos_hint: {'center_x': .875, 'y': 0}
+            size_hint: 0.748, 0.375
             text_size: self.size
             padding: 8, 8
-            font_name: '../data/fonts/Segoe_UI.ttf'
+            on_press:
             Image:
                 source: '../data/img/GPS Device-64.png'
-                color: [1,1,1,1]
                 y: self.parent.y + self.parent.height - 90
-                x: self.parent.x + self.parent.height - 15
+                x: self.parent.x + self.parent.height - 60
 
 <EquipamentoScreen@Screen>:
     canvas:
         Color:
-            rgb: [1,1,1,1]
+            rgb: C('#111111')
         Rectangle:
             pos: self.pos
             size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        pos_hint: {'center_y': 0.6, 'center_x': 0.5}
 
-    FloatLayout:
-        Label:
-            id: lbl_equip
-            text: 'Equipamento: '
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
-            font_name: '../data/fonts/Segoe_UI.ttf'
-            size_hint_x:0.3
-            size_hint_y:1.8
-        BoxLayout:
-            pos: (220,410)
-            size_hint_x: 0.621
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_equip
-                font_size: '36sp'
-                padding_y: (self.height - self.line_height) / 2
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
-        Label:
-            id: lbl_operador
-            text: 'Operador: '
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
-            font_name: '../data/fonts/Segoe_UI.ttf'
-            size_hint_x:0.3
-            size_hint_y:1.6
-        BoxLayout:
-            pos: (220,356)
-            size_hint_x: 0.2
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_operador
-                font_size: '36sp'
-                padding_y: (self.height - self.line_height) / 2
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
-            Button:
-                id: btn_search
-                background_normal: '../data/img/AO734.png'
-                border: 30, 30, 30, 30
-                Image:
-                    source: '../data/img/Search-64.png'
-                    y: self.parent.y - 28
-                    x: self.parent.x- 10
-        BoxLayout:
-            pos: (400,356)
-            size_hint_x: 0.4
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_search
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
+        Button:
+            on_press: root.manager.current = 'start_screen'
+            id: btn_back
+            size_hint: None, None
+            pos_hint: {'right': 0.1 , 'y': 0.01}
+            background_normal: ''
+            background_color: C('#111111')
+            Image:
+                source: '../data/img/Return-64.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 35, 35
+                allow_stretch: True
 
         Label:
             id: lbl_medicao
-            text: 'Medicao inicial: '
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
+            text: 'Informe a medição inicial:'
+            font_size: '20sp'
             font_name: '../data/fonts/Segoe_UI.ttf'
-            size_hint_x:0.3
-            size_hint_y:1.35
+            halign: 'center'
 
-        BoxLayout:
-            pos: (220,300)
-            size_hint_x: 0.2
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_medicao
-                font_size: '36sp'
-                padding_y: (self.height - self.line_height) / 2
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
+        TextInput:
+            id: txtInp_medicao
+            text: ''
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            size_hint: 0.2, 0.4
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            padding_y: ( self.height - self.line_height ) / 2
+            background_normal: ''
+            background_color: C('#3BC87F')
+            multiline: 'False'
 
-        BoxLayout:
-            Label:
-                id: lbl_turma
-                text: 'Turma: '
-                color: [0, 0, 0, 1]
-                font_size: root.height / 20
-                font_name: '../data/fonts/Segoe_UI.ttf'
 
-            Label:
-                text: 'Diurno:'
-                color: [0, 0, 0, 1]
-            CheckBox:
-                group: 'turma'
-                on_release: True
+        Label:
+            text: 'Implemento 1:'
+        CheckBox:
+            id: chk_implemento1
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            on_active: root.ids.txtInp_implemento1.readonly=False
+        TextInput:
+            id: txtInp_implemento1
+            text: ''
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            size_hint: 0.2, 0.4
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            padding_y: ( self.height - self.line_height ) / 2
+            background_normal: ''
+            background_color: C('#3BC87F')
+            multiline: 'False'
+            readonly: 'True'
+            input_type: 'number'
 
-            Label:
-                text: 'Noturno:'
-                color: [0, 0, 0, 1]
-            CheckBox:
-                group: 'turma'
+        Label:
+            text: 'Implemento 2:'
+        CheckBox:
+            id: chk_implemento2
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            on_active: root.ids.txtInp_implemento2.readonly=False
+        TextInput:
+            id: txtInp_implemento2
+            text: ''
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            size_hint: 0.2, 0.4
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            padding_y: ( self.height - self.line_height ) / 2
+            background_normal: ''
+            background_color: C('#3BC87F')
+            multiline: 'False'
+            readonly: 'True'
 
-            Label:
-                text: 'Vespertino:'
-                color: [0, 0, 0, 1]
-            CheckBox:
-                group: 'turma'
+    GridLayout:
+        cols: 6
+        pos_hint: {'center_y': 0.12, 'center_x': 0.5}
 
-        BoxLayout:
-            pos: (10,10)
-            size_hint_x: 0.2
-            size_hint_y: 0.12
-            Button:
-                on_release: root.manager.current = root.manager.previous()
-                id: btn_previous
-                background_normal: '../data/img/Circled Left 2-64.png'
-            Label:
-                id: lbl_previous
-                text: 'Voltar'
-                color: [0, 0, 0, 1]
-                font_size: root.height / 20
-                font_name: '../data/fonts/Segoe_UI.ttf'
+        Label:
+            text: 'Diurno:'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+        CheckBox:
+            group: 'a'
+            on_release: True
+            active: False
 
-        BoxLayout:
-            pos: (630,10)
-            size_hint_x: 0.2
-            size_hint_y: 0.12
-            Label:
-                id: lbl_next
-                text: 'Avancar'
-                color: [0, 0, 0, 1]
-                font_size: root.height / 20
-                font_name: '../data/fonts/Segoe_UI.ttf'
-            Button:
-                id: btn_next
-                background_normal: '../data/img/Circled Right 2-64.png'
+        Label:
+            text: 'Noturno:'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+        CheckBox:
+            group: 'a'
+            on_release: True
+            active: False
+
+        Label:
+            text: 'Vespertino:'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+        CheckBox:
+            group: 'a'
+            on_release: True
+            active: False
+
+    Button:
+        id: btn_startApontamento
+        text: 'Avançar'
+        font_name: '../data/fonts/Segoe_UI.ttf'
+        background_normal: ''
+        background_color: C('#00B357')
+        size_hint_x: 1
+        size_hint_y: .3/4
+        y: 1
+
 
 <ConfiguracoesScreen@Screen>:
     canvas:
         Color:
-            rgb: [1,1,1,1]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-    FloatLayout:
-        Label:
-            id: lbl_cod_equipamento
-            text: 'Cod. equipamento: '
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
-            font_name: '../data/fonts/Segoe_UI.ttf'
-            size_hint_x:0.3
-            size_hint_y:1.75
-        BoxLayout:
-            pos: (220,410)
-            size_hint_x: 0.2
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_cod_equipamento
-                font_size: '36sp'
-                padding_y: (self.height - self.line_height) / 2
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
-            Button:
-                id: btn_search
-                background_normal: '../data/img/AO734.png'
-                border: 30, 30, 30, 30
-                Image:
-                    source: '../data/img/Search-64.png'
-                    y: self.parent.y - 28
-                    x: self.parent.x- 10
-        BoxLayout:
-            pos: (400,410)
-            size_hint_x: 0.4
-            size_hint_y: 0.11
-            TextInput:
-                id: txt_search
-                border: 30, 30, 30, 30
-                background_normal: '../data/img/AO734.png'
-
-        BoxLayout:
-            orientation: 'vertical'
-            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
-            size_hint_x: .5
-            size_hint_y: .5
-            Button:
-                id: btn_update
-                text: 'Atualizar dados'
-                font_name: '../data/fonts/Segoe_UI.ttf'
-                Image:
-                    source: '../data/img/Available Updates-64.png'
-                    y: self.parent.y - 22
-                    x: self.parent.x- 10
-            Button:
-                id: btn_clear
-                text: 'Limpar dados'
-                font_name: '../data/fonts/Segoe_UI.ttf'
-                Image:
-                    source: '../data/img/Broom-64.png'
-                    y: self.parent.y - 22
-                    x: self.parent.x- 10
-            Button:
-                id: btn_senddata
-                text: 'Enviar dados'
-                font_name: '../data/fonts/Segoe_UI.ttf'
-                Image:
-                    source: '../data/img/Sent-64.png'
-                    y: self.parent.y - 22
-                    x: self.parent.x- 10
-            Button:
-                id: btn_save
-                text: 'Gravar'
-                font_name: '../data/fonts/Segoe_UI.ttf'
-                Image:
-                    source: '../data/img/Save-64.png'
-                    y: self.parent.y - 22
-                    x: self.parent.x- 10
-        BoxLayout:
-            pos: (10,10)
-            size_hint_x: 0.2
-            size_hint_y: 0.12
-            Button:
-                on_release: root.manager.current = root.manager.previous()
-                id: btn_previous
-                background_normal: '../data/img/Circled Left 2-64.png'
-            Label:
-                id: lbl_previous
-                text: 'Voltar'
-                color: [0, 0, 0, 1]
-                font_size: root.height / 20
-                font_name: '../data/fonts/Segoe_UI.ttf'
-
-        BoxLayout:
-            pos: (630,10)
-            size_hint_x: 0.2
-            size_hint_y: 0.12
-            Label:
-                id: lbl_next
-                text: 'Avancar'
-                color: [0, 0, 0, 1]
-                font_size: root.height / 20
-                font_name: '../data/fonts/Segoe_UI.ttf'
-            Button:
-                id: btn_next
-                background_normal: '../data/img/Circled Right 2-64.png'
-
-<AboutScreen@Screen>:
-    canvas:
-        Color:
-            rgb: [1,1,1,1]
+            rgb: C('#111111')
         Rectangle:
             pos: self.pos
             size: self.size
     BoxLayout:
-        padding: root.width * .02, root.height * .02
+        orientation: 'vertical'
+        padding: 60
+        pos_hint: {'center_y': 0.6, 'center_x': 0.5}
+
+        Button:
+            on_press: root.manager.current = 'start_screen'
+            id: btn_back
+            size_hint: None, None
+            pos_hint: {'right': 0.1 , 'y': 0.01}
+            background_normal: ''
+            background_color: C('#111111')
+            Image:
+                source: '../data/img/Return-64.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 35, 35
+                allow_stretch: True
+
         Label:
-#            text: app.getText()
-            color: [.4,1,.1,1]
-            halign: "center"
-            markup: True
-            font_size: root.height / 20
-            text_size: self.width, None
-            center_y: .5
-            on_ref_press: app.on_ref_press(*args)
+            id: lb_codEquip
+            text: 'Informe o código do equipamento:'
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            halign: 'center'
+
+        TextInput:
+            id: txtInp_codEquip
+            text: ''
+            font_size: '20sp'
+            font_name: '../data/fonts/Segoe_UI.ttf'
+            size_hint: 0.2, 0.4
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            padding_y: ( self.height - self.line_height ) / 2
+            background_normal: ''
+            background_color: C('#3BC87F')
+            multiline: 'False'
+
+        Label:
+            id: lb_codOpera
+            text: 'Informe o código do operador:'
+            font_size: '20sp'
             font_name: '../data/fonts/Segoe_UI.ttf'
 
-    BoxLayout:
-        pos: (10,10)
-        size_hint_x: 0.1
-        size_hint_y: 0.11
-        Button:
-            on_release: root.manager.current = root.manager.next()
-            id: btn_previous
-            background_normal: '../data/img/Circled Left 2-64.png'
-        Label:
-            id: lbl_previous
-            text: 'Voltar'
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
+        TextInput:
+            id: txtInp_codOpera
+            text: ''
+            font_size: '20sp'
             font_name: '../data/fonts/Segoe_UI.ttf'
+            size_hint: 0.2, 0.4
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            padding_y: ( self.height - self.line_height ) / 2
+            background_normal: ''
+            background_color: C('#3BC87F')
+            multiline: 'False'
 
-    BoxLayout:
-        pos: (630,10)
-        size_hint_x: 0.1
-        size_hint_y: 0.11
-        Label:
-            id: lbl_next
-            text: 'Avancar'
-            color: [0, 0, 0, 1]
-            font_size: root.height / 20
-            font_name: '../data/fonts/Segoe_UI.ttf'
+    StackLayout:
+        pos_hint: {'center_x': .8, 'center_y': 0.03}
+        orientation: 'bt-rl'
+        padding: 5
+        size_hint_x: .6
+        size_hint_y: .3/4
+
         Button:
-            id: btn_next
-            background_normal: '../data/img/Circled Right 2-64.png'
+            id: btn_salvar
+            text: 'Salvar'
+            background_normal: ''
+            background_color: C('#00B357')
+
+        Button:
+            id: btn_log_envio
+            text: 'Log de envio'
+            background_normal: ''
+            background_color: C('#00B357')
+
+
+
+
+
+

@@ -1,41 +1,47 @@
 from kivy.uix.floatlayout import FloatLayout
 from kivy.app import App
-from kivy.config import Config
-Config.set('graphics', 'width', '800')
-Config.set('graphics', 'height', '480')
-from subprocess import call
-
+from kivy.utils import platform
 
 
 class SmAgro(FloatLayout):
     def __init__(self, **kwargs):
         super(SmAgro, self).__init__(**kwargs)
-        self.screen_list = []
-
-    def call_External_Pog(self):
-        call(['7w.sh'])
-
-    def changeScreen(self, next_screen):
-
-        if next_screen == "configuracoes":
-            self.ids.kivy_screen_manager.current = "configuracoes_screen"
-
-        if next_screen == "equipamentos":
-            self.ids.kivy_screen_manager.current = "equipamento_screen"
-
-        if next_screen == "sobre":
-            self.ids.kivy_screen_manager.current = "about_screen"
-
-        if next_screen == "voltar":
-            self.ids.kivy_screen_manager.current = "start_screen"
-
 
 class SMAgroApp(App):
     def __init__(self, **kwargs):
         super(SMAgroApp, self).__init__(**kwargs)
+
+    # def call_App(self):
+    #     if platform() == 'android':
+    #
+    #         PythonActivity = autoclass('org.renpy.android.PythonActivity')  # request the Kivy activity instance
+    #         Intent = autoclass('android.content.Intent')  # get the Android Intend class
+    #         intent = Intent()
+    #         intent.setComponent(new ComponentName('com.navikey', 'com.navikey.seven_ways'))
+    #         currentActivity = cast('android.app.Activity', PythonActivity.mActivity)
+    #         currentActivity.startActivity(intent)
+    def call_App(self):
+        if platform() == "android":
+            from jnius import cast
+            from jnius import autoclass
+
+            PythonActivity = autoclass('org.renpy.android.PythonActivity')
+            PythonActivity = autoclass('org.renpy.android.PythonActivity')
+            Intent = autoclass('android.content.Intent')
+            Context = autoclass('android.content.Context')
+            activity = cast('android.app.Activity', PythonActivity.mActivity)
+
+            # manager = autoclass('android.content.pm.PackageManager')
+            # or:
+            manager = activity.getPackageManager()
+
+            intent = manager.getLaunchIntentForPackage("com.navikey.seven_ways")
+            intent.addCategory(Intent.CATEGORY_LAUNCHER)
+
+            activity.startActivity(intent)
+
     def build(self):
         return SmAgro()
-
 
 if __name__ == '__main__':
     SMAgroApp().run()
